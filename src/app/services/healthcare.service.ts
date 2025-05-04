@@ -1,38 +1,82 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { Doctor, Appointment, Activity, Stats } from '../interfaces/healthcare.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HealthcareService {
-  private apiUrl = 'api/healthcare'; // Adjust this to match your API endpoint
+  // Mock data for development
+  private mockDoctor: Doctor = {
+    id: '1',
+    name: 'Dr. Carlos Rodríguez',
+    specialty: 'Medicina General',
+    email: 'carlos.rodriguez@hospital.com'
+  };
 
-  constructor(private http: HttpClient) {}
+  private mockAppointments: Appointment[] = [
+    {
+      id: '1',
+      patientName: 'Juan Pérez',
+      dateTime: '2024-03-20 09:00',
+      type: 'presential',
+      reason: 'Consulta General',
+      status: 'pending'
+    },
+    {
+      id: '2',
+      patientName: 'María García',
+      dateTime: '2024-03-20 10:30',
+      type: 'remote',
+      reason: 'Seguimiento',
+      status: 'confirmed'
+    }
+  ];
 
-  getDoctorProfile(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/doctor/profile`);
+  private mockActivities: Activity[] = [
+    {
+      id: '1',
+      type: 'created',
+      message: 'Nueva cita programada con Juan Pérez',
+      time: 'Hace 2 horas'
+    },
+    {
+      id: '2',
+      type: 'completed',
+      message: 'Consulta finalizada con María García',
+      time: 'Hace 1 día'
+    }
+  ];
+
+  private mockStats: Stats = {
+    appointments: 5,
+    patients: 120,
+    prescriptions: 35
+  };
+
+  constructor() {}
+
+  getDoctorProfile(): Observable<Doctor> {
+    return of(this.mockDoctor);
   }
 
-  getUpcomingAppointments(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/appointments/upcoming`);
+  getUpcomingAppointments(): Observable<Appointment[]> {
+    return of(this.mockAppointments);
   }
 
-  getRecentActivities(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/activities/recent`);
+  getRecentActivities(): Observable<Activity[]> {
+    return of(this.mockActivities);
   }
 
-  getDoctorStats(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/doctor/stats`);
+  getDoctorStats(): Observable<Stats> {
+    return of(this.mockStats);
   }
 
-  startConsultation(appointmentId: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/consultation/start/${appointmentId}`, {});
+  startConsultation(appointmentId: string): Observable<void> {
+    return of(void 0);
   }
 
-  rescheduleAppointment(appointmentId: string, newDateTime: Date): Observable<any> {
-    return this.http.put(`${this.apiUrl}/appointments/${appointmentId}/reschedule`, {
-      dateTime: newDateTime
-    });
+  rescheduleAppointment(appointmentId: string, newDateTime: string): Observable<void> {
+    return of(void 0);
   }
 }
