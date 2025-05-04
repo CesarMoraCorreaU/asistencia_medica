@@ -13,7 +13,7 @@ import { Doctor, Appointment, Activity, Stats } from '../../interfaces/healthcar
     <div class="dashboard-page">
       <div class="container">
         <header class="dashboard-header">
-          <h1>Panel de Control Médico demo</h1>
+          <h1>Panel de Control Médico</h1>
           <div class="user-info" *ngIf="user">
             <span>Bienvenido, Dr. {{ user.name }}</span>
           </div>
