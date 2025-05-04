@@ -1,18 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CardComponent } from '../../components/card/card.component';
 import { HealthcareService } from '../../services/healthcare.service';
+import { Doctor, Appointment, Activity, Stats } from '../../interfaces/healthcare.interface';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [CommonModule, FormsModule, CardComponent],
-  template: `
+  template: ` 
     <div class="dashboard-page">
       <div class="container">
         <header class="dashboard-header">
-          <h1>Panel de Control Médico</h1>
+          <h1>Panel de Control Médico demo</h1>
           <div class="user-info" *ngIf="user">
             <span>Bienvenido, Dr. {{ user.name }}</span>
           </div>
@@ -320,11 +321,11 @@ import { HealthcareService } from '../../services/healthcare.service';
     }
   `]
 })
-export class DashboardComponent {
-  user: any = null;
-  appointments: any[] = [];
-  activities: any[] = [];
-  stats: any = {
+export class DashboardComponent implements OnInit {
+  user: Doctor | null = null;
+  appointments: Appointment[] = [];
+  activities: Activity[] = [];
+  stats: Stats = {
     appointments: 0,
     patients: 0,
     prescriptions: 0
@@ -341,10 +342,10 @@ export class DashboardComponent {
 
   loadUserProfile(): void {
     this.healthcareService.getDoctorProfile().subscribe(
-      (data) => {
+      (data: Doctor) => {
         this.user = data;
       },
-      (error) => {
+      (error: Error) => {
         console.error('Error cargando perfil:', error);
       }
     );
@@ -352,10 +353,10 @@ export class DashboardComponent {
 
   loadAppointments(): void {
     this.healthcareService.getUpcomingAppointments().subscribe(
-      (data) => {
+      (data: Appointment[]) => {
         this.appointments = data;
       },
-      (error) => {
+      (error: Error) => {
         console.error('Error cargando citas:', error);
       }
     );
@@ -363,10 +364,10 @@ export class DashboardComponent {
 
   loadActivities(): void {
     this.healthcareService.getRecentActivities().subscribe(
-      (data) => {
+      (data: Activity[]) => {
         this.activities = data;
       },
-      (error) => {
+      (error: Error) => {
         console.error('Error cargando actividades:', error);
       }
     );
@@ -374,29 +375,28 @@ export class DashboardComponent {
 
   loadStats(): void {
     this.healthcareService.getDoctorStats().subscribe(
-      (data) => {
+      (data: Stats) => {
         this.stats = data;
       },
-      (error) => {
+      (error: Error) => {
         console.error('Error cargando estadísticas:', error);
       }
     );
   }
 
-  startConsultation(appointment: any): void {
+  startConsultation(appointment: Appointment): void {
     this.healthcareService.startConsultation(appointment.id).subscribe(
       () => {
         // Redirigir a la página de consulta
         // this.router.navigate(['/consultation', appointment.id]);
       },
-      (error) => {
+      (error: Error) => {
         console.error('Error iniciando consulta:', error);
       }
     );
   }
 
-  rescheduleAppointment(appointment: any): void {
-    // Implementar lógica de reprogramación
-    // Podría abrir un modal o navegar a una página de reprogramación
+  rescheduleAppointment(appointment: Appointment): void {
+    // Implementation pending
   }
 }
